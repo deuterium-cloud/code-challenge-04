@@ -23,7 +23,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 @Slf4j
 @RestController
-@RequestMapping("/challenges")
+@RequestMapping("/api/challenge")
 public class CombatController {
 
     private final CombatService service;

@@ -49,11 +49,12 @@ public class WinnerListener {
     }
 
     public static Optional<CharacterItem> getRandomItem(Collection<CharacterItem> items) {
-        return items
-                .stream()
-                .skip(ThreadLocalRandom.current()
-                        .nextInt(items.size()))
-                .findAny();
+        if (items.isEmpty()) {
+            return Optional.empty();
+        }
+        int anInt = ThreadLocalRandom.current()
+                .nextInt(items.size());
+        return Optional.of(new ArrayList<>(items).get(anInt));
     }
 
 

@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Slf4j
 @RestController
-@RequestMapping("/characters")
+@RequestMapping("/api/character")
 public class CharacterController {
 
     private final CharacterService service;

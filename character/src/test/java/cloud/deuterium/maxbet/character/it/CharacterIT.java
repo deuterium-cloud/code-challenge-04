@@ -42,14 +42,14 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return 401")
     @Test
     void get_characters_failed() throws Exception {
-        mockMvc.perform(get("/api/characters"))
+        mockMvc.perform(get("/api/character"))
                 .andExpect(status().isUnauthorized());
     }
 
     @DisplayName("Should return 403 because caller has no GAME_MASTER role")
     @Test
     void get_characters_failed_2() throws Exception {
-        mockMvc.perform(get("/characters")
+        mockMvc.perform(get("/api/character")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_JWT))
                 .andExpect(status().isForbidden());
     }
@@ -57,7 +57,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return characters")
     @Test
     void get_characters_ok() throws Exception {
-        mockMvc.perform(get("/characters")
+        mockMvc.perform(get("/api/character")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_GAME_MASTER_JWT))
                 .andExpect(status().isOk());
     }
@@ -66,7 +66,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return 401")
     @Test
     void get_character_failed() throws Exception {
-        mockMvc.perform(get("/characters/1a70816c-1939-4417-97b1-fe349dd7442a"))
+        mockMvc.perform(get("/api/character/1a70816c-1939-4417-97b1-fe349dd7442a"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -74,7 +74,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return 403 because caller has USER role and is not resource owner")
     @Test
     void get_character_failed_2() throws Exception {
-        mockMvc.perform(get("/characters/1a70816c-1939-4417-97b1-fe349dd7442a")
+        mockMvc.perform(get("/api/character/1a70816c-1939-4417-97b1-fe349dd7442a")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_2_JWT))
                 .andExpect(status().isForbidden());
     }
@@ -83,7 +83,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return character with given ID because caller is GAME_MASTER")
     @Test
     void get_character_ok() throws Exception {
-        mockMvc.perform(get("/characters/1a70816c-1939-4417-97b1-fe349dd7442a")
+        mockMvc.perform(get("/api/character/1a70816c-1939-4417-97b1-fe349dd7442a")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_GAME_MASTER_JWT))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1a70816c-1939-4417-97b1-fe349dd7442a"))
@@ -95,7 +95,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return character with given ID because caller is resource owner")
     @Test
     void get_character_ok_2() throws Exception {
-        mockMvc.perform(get("/characters/1a70816c-1939-4417-97b1-fe349dd7442a")
+        mockMvc.perform(get("/api/character/1a70816c-1939-4417-97b1-fe349dd7442a")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_JWT))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("1a70816c-1939-4417-97b1-fe349dd7442a"))
@@ -106,7 +106,7 @@ class CharacterIT extends BaseIT {
     @DisplayName("Should return 401")
     @Test
     void create_character_failed() throws Exception {
-        mockMvc.perform(post("/characters"))
+        mockMvc.perform(post("/api/character"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -128,7 +128,7 @@ class CharacterIT extends BaseIT {
                 }
                 """;
 
-        ResultActions resultActions = mockMvc.perform(post("/characters")
+        ResultActions resultActions = mockMvc.perform(post("/api/character")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_JWT)
                         .content(mageJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -162,7 +162,7 @@ class CharacterIT extends BaseIT {
                 }
                 """;
 
-        mockMvc.perform(post("/characters")
+        mockMvc.perform(post("/api/character")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_JWT)
                         .content(mageJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -190,7 +190,7 @@ class CharacterIT extends BaseIT {
                 }
                 """;
 
-        mockMvc.perform(post("/characters")
+        mockMvc.perform(post("/api/character")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + VALID_USER_JWT)
                         .content(mageJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))

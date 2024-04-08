@@ -10,6 +10,7 @@ import java.util.UUID;
  * Created by Milan Stojkovic 04-Apr-2024
  */
 
+@ToString
 @Builder
 @Setter
 @Getter

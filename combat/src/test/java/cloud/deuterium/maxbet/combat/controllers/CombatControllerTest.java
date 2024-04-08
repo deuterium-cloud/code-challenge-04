@@ -48,7 +48,7 @@ class CombatControllerTest {
                 "d112164e-6aae-4c3a-8a60-44f1a7270166");
 
         webClient.post()
-                .uri("/challenges")
+                .uri("/api/challenge")
                 .body(Mono.just(request), ChallengeRequest.class)
                 .exchange()
                 .expectStatus().isUnauthorized();
@@ -65,7 +65,7 @@ class CombatControllerTest {
 
         webClient.mutateWith(mockJwt())
                 .post()
-                .uri("/challenges")
+                .uri("/api/challenge")
                 .body(Mono.just(request), ChallengeRequest.class)
                 .exchange()
                 .expectStatus().isOk();
@@ -75,7 +75,7 @@ class CombatControllerTest {
     @DisplayName("Should return 401 Unauthorized")
     void attack_failed() {
         webClient.post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/attack")
+                .uri("/api/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/attack")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
@@ -92,7 +92,7 @@ class CombatControllerTest {
 
         webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
                 .post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/attack")
+                .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/attack")
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -100,7 +100,7 @@ class CombatControllerTest {
     @Test
     void cast_failed() {
         webClient.post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/cast")
+                .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/cast")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
@@ -117,7 +117,7 @@ class CombatControllerTest {
 
         webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
                 .post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/cast")
+                .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/cast")
                 .exchange()
                 .expectStatus().isOk();
     }
@@ -125,7 +125,7 @@ class CombatControllerTest {
     @Test
     void heal_failed() {
         webClient.post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/heal")
+                .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/heal")
                 .exchange()
                 .expectStatus().isUnauthorized();
     }
@@ -142,7 +142,7 @@ class CombatControllerTest {
 
         webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
                 .post()
-                .uri("/challenges/d98656a7-78c1-489a-bac2-4a836bcac912/heal")
+                .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/heal")
                 .exchange()
                 .expectStatus().isOk();
     }

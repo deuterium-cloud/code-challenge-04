@@ -7,7 +7,6 @@ import cloud.deuterium.maxbet.combat.entities.Combat;
 import cloud.deuterium.maxbet.combat.enums.CombatStatus;
 import cloud.deuterium.maxbet.combat.events.CombatCommandEvent;
 import cloud.deuterium.maxbet.combat.events.CombatStartEvent;
-import cloud.deuterium.maxbet.combat.events.CombatStopEvent;
 import cloud.deuterium.maxbet.combat.exceptions.BadRequestException;
 import cloud.deuterium.maxbet.combat.exceptions.ExternalServerException;
 import cloud.deuterium.maxbet.combat.exceptions.ForbiddenException;
@@ -76,7 +75,7 @@ public class CombatService {
 
     private @NotNull Mono<ChallengeResponse> callCharacterService(ChallengeRequest cRequest, String jwt) {
         return webClient.post()
-                .uri("/characters/challenge")
+                .uri("/api/character/challenge")
                 .header("Authorization", "Bearer " + jwt)
                 .body(Mono.just(cRequest), ChallengeRequest.class)
                 .retrieve()
@@ -96,7 +95,7 @@ public class CombatService {
                 .challengerAttack(res.getChallengerAttack())
                 .challengerCast(res.getChallengerCast())
                 .challengerHeal(res.getChallengerHeal())
-                .challengedId(res.getChallengerId())
+                .challengedId(res.getChallengedId())
                 .challengedUserId(res.getChallengedUserId())
                 .challengedHealth(res.getChallengedHealth())
                 .challengedMana(res.getChallengedMana())

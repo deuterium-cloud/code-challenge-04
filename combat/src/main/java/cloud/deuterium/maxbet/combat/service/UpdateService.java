@@ -126,20 +126,23 @@ public class UpdateService {
     }
 
     private Mono<WinnerEvent> calculateWinner(Combat combat) {
-
         int crHealth = combat.getChallengerHealth();
         int cdHealth = combat.getChallengedHealth();
 
-        if (crHealth > 0 || cdHealth > 0) {
+        if (crHealth > 0 & cdHealth > 0) {
+            log.debug("Result is Winner");
             return Mono.empty(); // Draw
         }
 
         if (crHealth == 0) {
             // 2nd Player is Winner
-            return Mono.just(new WinnerEvent(combat.getChallengedUserId(), combat.getChallengerUserId()));
+            log.debug("2nd Player is Winner {}", combat.getChallengedId());
+            return Mono.just(new WinnerEvent(combat.getChallengedId(), combat.getChallengerId()));
         } else {
             // 1st Player is Winner
-            return Mono.just(new WinnerEvent(combat.getChallengerUserId(), combat.getChallengedUserId()));
+            log.debug("1st Player is Winner {}", combat.getChallengerId());
+            return Mono.just(new WinnerEvent(combat.getChallengerId(), combat.getChallengedId()));
         }
     }
 }
+//WinnerEvent(winnerId=995658ff-144b-4f19-979f-811aaa063641, loserId=995658ff-144b-4f19-979f-811aaa063641)

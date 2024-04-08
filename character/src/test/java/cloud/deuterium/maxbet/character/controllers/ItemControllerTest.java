@@ -56,7 +56,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 401 Unauthorized")
     void get_items_unauthorized() throws Exception {
-        this.mockMvc.perform(get("/items"))
+        this.mockMvc.perform(get("/api/items"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -64,7 +64,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 403 Forbidden")
     void get_items_forbidden() throws Exception {
-        this.mockMvc.perform(get("/items")
+        this.mockMvc.perform(get("/api/items")
                 )
                 .andExpect(status().isForbidden());
     }
@@ -78,14 +78,14 @@ class ItemControllerTest {
 
         when(service.getAll(any(Pageable.class))).thenReturn(page);
 
-        this.mockMvc.perform(get("/items"))
+        this.mockMvc.perform(get("/api/items"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @DisplayName("Should return 401 Unauthorized")
     void get_item_unauthorized() throws Exception {
-        this.mockMvc.perform(get("/items/8d1134c7-57e8-43ec-965d-abb7efd31047"))
+        this.mockMvc.perform(get("/api/items/8d1134c7-57e8-43ec-965d-abb7efd31047"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -96,7 +96,7 @@ class ItemControllerTest {
         ItemDto itemDto = createItemDto();
         when(service.getById(any(String.class))).thenReturn(itemDto);
 
-        this.mockMvc.perform(get("/items/8d1134c7-57e8-43ec-965d-abb7efd31047"))
+        this.mockMvc.perform(get("/api/items/8d1134c7-57e8-43ec-965d-abb7efd31047"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value("8d1134c7-57e8-43ec-965d-abb7efd31047"))
                 .andExpect(jsonPath("$.name").value("Sword"));
@@ -105,7 +105,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 401 Unauthorized")
     void create_item_unauthorized() throws Exception {
-        this.mockMvc.perform(post("/items"))
+        this.mockMvc.perform(post("/api/items"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -118,7 +118,7 @@ class ItemControllerTest {
         ItemDto itemDto = createItemDto();
         when(service.create(any(CreateItemDto.class))).thenReturn(itemDto);
 
-        this.mockMvc.perform(post("/items")
+        this.mockMvc.perform(post("/api/items")
                         .content(objectMapper.writeValueAsString(createItemDto))
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
@@ -129,7 +129,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 401 Unauthorized")
     void grant_item_unauthorized() throws Exception {
-        this.mockMvc.perform(post("/items/grant")
+        this.mockMvc.perform(post("/api/items/grant")
                         .with(csrf().asHeader()))
                 .andExpect(status().isUnauthorized());
     }
@@ -146,7 +146,7 @@ class ItemControllerTest {
                 }
                 """;
 
-        this.mockMvc.perform(post("/items/grant")
+        this.mockMvc.perform(post("/api/items/grant")
                         .content(grantJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
@@ -155,7 +155,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 401 Unauthorized")
     void gift_item_unauthorized() throws Exception {
-        this.mockMvc.perform(post("/items/grant"))
+        this.mockMvc.perform(post("/api/items/grant"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -171,7 +171,7 @@ class ItemControllerTest {
                 }
                 """;
 
-        this.mockMvc.perform(post("/items/gift")
+        this.mockMvc.perform(post("/api/items/gift")
                         .content(giftJson)
                         .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk());
