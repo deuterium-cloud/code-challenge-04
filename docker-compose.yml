@@ -1,0 +1,108 @@
+version: "3.8"
+
+services:
+  wog-postgres:
+    image: postgres:15.2
+    container_name: wog-postgres
+    hostname: wog-postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: world_of_gamecraft
+    volumes:
+      - wog-postgres-volume:/var/lib/postgresql/data
+
+  wog-redis:
+    image: redis:7.0-alpine
+    container_name: wog-redis
+    hostname: wog-redis
+    ports:
+      - 6379:6379
+
+  wog-rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: wog-rabbitmq
+    hostname: wog-rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+  wog-account-service:
+    container_name: wog-account-service
+    hostname: wog-account-service
+    build:
+      context: ./account
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    environment:
+      - spring.datasource.password=postgres
+      - spring.datasource.username=postgres
+      - spring.datasource.url=jdbc:postgresql://wog-postgres:5432/world_of_gamecraft?currentSchema=accounts
+      - app.client.redirectUri=http://localhost:3000
+      - app.client.logoutRedirectUri=http://localhost:3000
+      - app.issuer.uri=http://wog-account-service:8888
+    depends_on:
+      - wog-postgres
+
+  wog-character-service:
+    container_name: wog-character-service
+    hostname: wog-character-service
+    build:
+      context: ./character
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://wog-account-service:8888
+      - spring.datasource.password=postgres
+      - spring.datasource.username=postgres
+      - spring.datasource.url=jdbc:postgresql://wog-postgres:5432/world_of_gamecraft?currentSchema=characters
+      - spring.data.redis.url=redis://wog-redis:6379
+      - spring.rabbitmq.host=wog-rabbitmq
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.username=guest
+      - spring.rabbitmq.password=guest
+    depends_on:
+      - wog-postgres
+      - wog-rabbitmq
+      - wog-redis
+
+  wog-combat-service:
+    container_name: wog-combat-service
+    hostname: wog-combat-service
+    build:
+      context: ./combat
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - spring.security.oauth2.resourceserver.jwt.issuer-uri=http://wog-account-service:8888
+      - spring.r2dbc.username=postgres
+      - spring.r2dbc.password=postgres
+      - spring.r2dbc.url=r2dbc:postgresql://wog-postgres:5432/world_of_gamecraft?currentSchema=combat
+      - spring.flyway.url=jdbc:postgresql://wog-postgres:5432/world_of_gamecraft?currentSchema=combat
+      - app.character-api.url=http://wog-character-service:8080
+      - spring.rabbitmq.host=wog-rabbitmq
+      - spring.rabbitmq.port=5672
+      - spring.rabbitmq.username=guest
+      - spring.rabbitmq.password=guest
+    depends_on:
+      - wog-postgres
+      - wog-rabbitmq
+
+  wog-frontend-app:
+    container_name: wog-frontend-app
+    build:
+      context: ./react-pkce
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - wog-account-service
+
+volumes:
+  wog-postgres-volume:
+    driver: local
