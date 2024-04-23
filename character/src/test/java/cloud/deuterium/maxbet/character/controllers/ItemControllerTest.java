@@ -64,8 +64,7 @@ class ItemControllerTest {
     @Test
     @DisplayName("Should return 403 Forbidden")
     void get_items_forbidden() throws Exception {
-        this.mockMvc.perform(get("/api/items")
-                )
+        this.mockMvc.perform(get("/api/items"))
                 .andExpect(status().isForbidden());
     }
 

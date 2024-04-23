@@ -30,9 +30,9 @@ The project is consists of three backend services, postgresql, redis, rabbitmq a
 
 ### React Frontend App
 
-React Frontend App is single page React App used for easy obtaining JWT from <b>Account Service<b>.
+React Frontend App is single page React App used for easy obtaining JWT from <b>Account Service</b>.
 Uses OAuth2 pkce Authorization code as public client to authenticate and get JWT.
-To run <b>React Frontend App<b> as standalone app, follow the steps:
+To run <b>React Frontend App</b> as standalone app, follow the steps:
 
 1. go to root folder, where package.json is located and run:
 
@@ -48,8 +48,8 @@ npm run start
 
 ### Account Service
 
-Account Service is <b>Spring boot Authorization server<b> responsible for User (Account) registration and
-for issuing JWT. The other two services, Character and Combat, are <b>Spring boot resource servers<b> which use Account Service
+Account Service is <b>Spring boot Authorization server</b> responsible for User (Account) registration and
+for issuing JWT. The other two services, Character and Combat, are <b>Spring boot resource servers</b> which use Account Service
 for JWT validation.
 
 ### Character Service
@@ -122,7 +122,7 @@ Finally, everything will be removed with stop.sh script:
 
 All of them have unique and very secure password: super_secret
 
-3. With obtained token, user can access <b>Character Service<b>
+3. With obtained token, user can access <b>Character Service</b>
 4. The seeded Characters are:
 
    | Owner      | Character name | Character id                         |
@@ -131,7 +131,7 @@ All of them have unique and very secure password: super_secret
    | two@wog.io | Bright Wizard  | d6608669-4332-4575-b8b1-5e3922ef4f12 |
 
 5. Every Character has Items attached. For example, Karl Franz has mighty warhammer named 'Ghal Maraz'
-6. Also, with tokens, Users can access <b>Combat Service<b> and start the fight
+6. Also, with tokens, Users can access <b>Combat Service</b> and start the fight
 
 ---
 

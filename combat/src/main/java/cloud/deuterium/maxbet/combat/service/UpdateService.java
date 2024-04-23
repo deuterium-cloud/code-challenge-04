@@ -129,8 +129,8 @@ public class UpdateService {
         int crHealth = combat.getChallengerHealth();
         int cdHealth = combat.getChallengedHealth();
 
-        if (crHealth > 0 & cdHealth > 0) {
-            log.debug("Result is Winner");
+        if (crHealth > 0 && cdHealth > 0) {
+            log.debug("Combat {} finished with Draw", combat.getId());
             return Mono.empty(); // Draw
         }
 
@@ -145,4 +145,3 @@ public class UpdateService {
         }
     }
 }
-//WinnerEvent(winnerId=995658ff-144b-4f19-979f-811aaa063641, loserId=995658ff-144b-4f19-979f-811aaa063641)

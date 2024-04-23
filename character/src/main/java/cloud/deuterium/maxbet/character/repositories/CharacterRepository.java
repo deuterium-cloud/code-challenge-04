@@ -23,5 +23,6 @@ public interface CharacterRepository extends JpaRepository<WoGCharacter, String>
     boolean existsByName(String name);
 
     boolean existsByIdAndCreatedBy(String id, String createdBy);
+
     Optional<WoGCharacter> findByIdAndCreatedBy(String id, String createdBy);
 }

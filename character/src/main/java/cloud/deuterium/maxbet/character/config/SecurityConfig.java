@@ -40,13 +40,13 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
 
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
             List<String> authorities = jwt.getClaim("roles");
             return authorities.stream()
                     .map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toSet());
         });
-        return jwtAuthenticationConverter;
+        return converter;
     }
 }

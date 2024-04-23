@@ -142,6 +142,7 @@ public class AuthServerConfig {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
+    // Issuer must be same url as real server url
     @Bean
     public AuthorizationServerSettings authorizationServerSettings(@Value("${app.issuer.uri}") String issuer) {
         return AuthorizationServerSettings.builder()

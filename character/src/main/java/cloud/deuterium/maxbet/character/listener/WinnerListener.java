@@ -56,6 +56,4 @@ public class WinnerListener {
                 .nextInt(items.size());
         return Optional.of(new ArrayList<>(items).get(anInt));
     }
-
-
 }
