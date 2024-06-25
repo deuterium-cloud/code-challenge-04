@@ -1,6 +1,7 @@
 package cloud.deuterium.maxbet.combat.controllers;
 
 import cloud.deuterium.maxbet.combat.config.SecurityConfig;
+import cloud.deuterium.maxbet.combat.controllers.utils.WithCustomClaim;
 import cloud.deuterium.maxbet.combat.dtos.ChallengeRequest;
 import cloud.deuterium.maxbet.combat.service.CombatService;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -38,8 +37,6 @@ class CombatControllerTest {
     @MockBean
     ReactiveJwtDecoder jwtDecoder;
 
-    @MockBean
-    SecurityContext securityContext;
 
     @Test
     @DisplayName("Should return 401 Unauthorized")
@@ -85,11 +82,6 @@ class CombatControllerTest {
         when(service.emitCommandEvent(any(UUID.class), any(String.class), any()))
                 .thenReturn(Mono.empty());
 
-        when(securityContext.getAuthentication())
-                .thenReturn(TestUtils.getMockJwt());
-
-        SecurityContextHolder.setContext(securityContext);
-
         webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
                 .post()
                 .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/attack")
@@ -110,11 +102,6 @@ class CombatControllerTest {
         when(service.emitCommandEvent(any(UUID.class), any(String.class), any()))
                 .thenReturn(Mono.empty());
 
-        when(securityContext.getAuthentication())
-                .thenReturn(TestUtils.getMockJwt());
-
-        SecurityContextHolder.setContext(securityContext);
-
         webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
                 .post()
                 .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/cast")
@@ -131,16 +118,13 @@ class CombatControllerTest {
     }
 
     @Test
+    @WithCustomClaim(name = "id", value = "23916d66-ce43-4fd0-a32a-6806fb6520ba")
     void heal() {
         when(service.emitCommandEvent(any(UUID.class), any(String.class), any()))
                 .thenReturn(Mono.empty());
 
-        when(securityContext.getAuthentication())
-                .thenReturn(TestUtils.getMockJwt());
-
-        SecurityContextHolder.setContext(securityContext);
-
-        webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
+//        webClient.mutateWith(mockJwt().jwt(jwt -> jwt.claim("id", "23916d66-ce43-4fd0-a32a-6806fb6520ba")))
+        webClient
                 .post()
                 .uri("/api/challenge/d98656a7-78c1-489a-bac2-4a836bcac912/heal")
                 .exchange()
